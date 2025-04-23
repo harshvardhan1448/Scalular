@@ -16,6 +16,7 @@ import pandas as pd
 import pdfkit
 from PyPDF2 import PdfMerger
 import tempfile
+from jinja2 import pass_context
 
 load_dotenv()
 
