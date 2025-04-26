@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "devCommand": "uvicorn api:app --host 0.0.0.0 --port 3000",
   "builds": [
     {
       "src": "api.py",
@@ -12,5 +11,11 @@
       "src": "/(.*)",
       "dest": "api.py"
     }
-  ]
+  ],
+  "functions": {
+    "api.py": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  }
 }
