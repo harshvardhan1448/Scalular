@@ -17,6 +17,7 @@ import pdfkit
 from PyPDF2 import PdfMerger
 import tempfile
 from jinja2 import pass_context
+from fastapi.responses import RedirectResponse
 
 load_dotenv()
 
@@ -61,7 +62,15 @@ genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
 print("HI")
 
-@app.get("/",response_class=JSONResponse)
+# @app.get("/",response_class=JSONResponse)
+# @app.get("/alive",response_class=JSONResponse)
+# async def alive():
+#     print("Healthy")
+#     return JSONResponse(content={"status":"Healthy"},status_code=200)
+@app.get("/",response_class=RedirectResponse)
+async def root():
+    return RedirectResponse(url="/extract_info")
+
 @app.get("/alive",response_class=JSONResponse)
 async def alive():
     print("Healthy")
