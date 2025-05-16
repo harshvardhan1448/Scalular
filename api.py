@@ -16,8 +16,6 @@ import pandas as pd
 import pdfkit
 from PyPDF2 import PdfMerger
 import tempfile
-from jinja2 import pass_context
-from fastapi.responses import RedirectResponse
 
 load_dotenv()
 
@@ -62,15 +60,7 @@ genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
 print("HI")
 
-# @app.get("/",response_class=JSONResponse)
-# @app.get("/alive",response_class=JSONResponse)
-# async def alive():
-#     print("Healthy")
-#     return JSONResponse(content={"status":"Healthy"},status_code=200)
-@app.get("/",response_class=RedirectResponse)
-async def root():
-    return RedirectResponse(url="/extract_info")
-
+@app.get("/",response_class=JSONResponse)
 @app.get("/alive",response_class=JSONResponse)
 async def alive():
     print("Healthy")
@@ -99,7 +89,7 @@ async def extract_info(base64_image):
         "gender": "men/women/kids",
         "quantity_in_gms": number,
         "product_name": "string",
-        "category": one of ["Boxers","Boxer briefs","Crew neck t shirs","Hoodies","Swearshirts","Undershirts","Women's camisole","Boys shorts","Girls shorts","Boys t-shirt","Girls t-shirt"],
+        "category": one of ["Crewneck T-shirts","Hoodies","Polo T-shirt","Boxer Brief","Boxer Shorts","Sweatshirts","Jogger Pants","Boys Top & Bottom","Women Pyjama Set","Women top & Shorts","Ladies Pyjama Set","Ladies Top & Shorts","Ladies Sleevless Top & Shorts","Women's Tank top","Women's Camisole"],
         "zipper": boolean,
         "logo_embroidery": boolean,
         "size": "2XL or 3XL"
@@ -108,8 +98,7 @@ async def extract_info(base64_image):
     try:
         response = model.generate_content([prompt, {"mime_type": "image/jpeg", "data": image_data}])
         print("Raw Gemini Response:", response.text)  # Debug log
-        #jnjkff
-        ## fnlfn
+        
         # Try to extract JSON from the response
         try:
             # Look for JSON-like content in the response
@@ -153,7 +142,7 @@ async def extract_fabric(data, base64image):
     data['category'] = data['category'].replace(" ", "-").lower()
     
     # Get available prints and fabric blends
-    prints = ['Waterprint', "Puff Print", "HD Print", "Foil", "Sublimation", "Tie Die", 'Solid']
+    prints = ['Waterprint', "Puff Print", "HD Print", "Foil", "Sublimation", "Tie Die", 'None']
     vals = list(obj[data['category']].keys())
     
     image_data = base64.b64decode(base64image)
@@ -162,7 +151,7 @@ async def extract_fabric(data, base64image):
         "fabric_and_blend": one of {vals},
         "print": one of {prints}
     }}
-    If print cannot fall under the given options, use 'Solid'.
+    If print cannot fall under the given options, use 'None'.
     If fabric_and_blend is not in the list, match to the closest value."""
     
     try:
