@@ -108,7 +108,7 @@ async def extract_info(base64_image):
     try:
         response = model.generate_content([prompt, {"mime_type": "image/jpeg", "data": image_data}])
         print("Raw Gemini Response:", response.text)  # Debug log
-        
+        #jnjkff
         # Try to extract JSON from the response
         try:
             # Look for JSON-like content in the response
