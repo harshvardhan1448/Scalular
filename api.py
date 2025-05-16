@@ -99,7 +99,7 @@ async def extract_info(base64_image):
         "gender": "men/women/kids",
         "quantity_in_gms": number,
         "product_name": "string",
-        "category": one of ["Crewneck T-shirts","Hoodies","Polo T-shirt","Boxer Brief","Boxer Shorts","Sweatshirts","Jogger Pants","Boys Top & Bottom","Women Pyjama Set","Women top & Shorts","Ladies Pyjama Set","Ladies Top & Shorts","Ladies Sleevless Top & Shorts","Women's Tank top","Women's Camisole"],
+        "category": one of ["Boxers","Boxer briefs","Crew neck t shirs","Hoodies","Swearshirts","Undershirts","Women's camisole","Boys shorts","Girls shorts","Boys t-shirt","Girls t-shirt"],
         "zipper": boolean,
         "logo_embroidery": boolean,
         "size": "2XL or 3XL"
@@ -152,7 +152,7 @@ async def extract_fabric(data, base64image):
     data['category'] = data['category'].replace(" ", "-").lower()
     
     # Get available prints and fabric blends
-    prints = ['Waterprint', "Puff Print", "HD Print", "Foil", "Sublimation", "Tie Die", 'None']
+    prints = ['Waterprint', "Puff Print", "HD Print", "Foil", "Sublimation", "Tie Die", 'Solid']
     vals = list(obj[data['category']].keys())
     
     image_data = base64.b64decode(base64image)
@@ -161,7 +161,7 @@ async def extract_fabric(data, base64image):
         "fabric_and_blend": one of {vals},
         "print": one of {prints}
     }}
-    If print cannot fall under the given options, use 'None'.
+    If print cannot fall under the given options, use 'Solid'.
     If fabric_and_blend is not in the list, match to the closest value."""
     
     try:
